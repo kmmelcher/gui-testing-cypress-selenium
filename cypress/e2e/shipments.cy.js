@@ -49,5 +49,25 @@ describe('shipments', () => {
     cy.get('#criteria_method').should('contain.text', 'All');
   });
 
-  // Implement the remaining test cases in a similar manner
+  it('visits shipment details by clicking on show button', () => {
+    cy.get('.button').contains('Show').click();
+
+    cy.get('.header').should('contain.text', 'Shipment for order #');
+  });
+
+  it('ships order with tracking code', () => {
+    cy.get('#sylius_shipment_ship_tracking:first').type('12345');
+    cy.get('button').contains('Ship').click();
+
+    cy.get('.sylius-flash-message').should('contain', 'Shipment has been successfully shipped.');
+  });
+
+  it('shows more table row items by selecting higher show filter', () => {
+    cy.get('table .item').should('have.length', 10);
+
+    cy.get('div .dropdown').contains('Show 10').click();
+    cy.get('.item').contains('25').click();
+
+    cy.get('table .item').should('have.length.greaterThan', 10);
+  });
 });
