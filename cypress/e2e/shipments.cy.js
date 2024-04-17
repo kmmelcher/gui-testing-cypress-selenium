@@ -39,7 +39,7 @@ describe('shipments', () => {
 
   it('should remove all filters by clicking clear filters button', () => {
     cy.get('#criteria_state').select('Ready');
-    cy.get('#criteria_channel').select('Home Plus Web Store');
+    cy.get('#criteria_channel').select('Fashion Web Store');
     cy.get('#criteria_method').select('UPS');
 
     cy.get('.button').contains('Clear filters').click();
@@ -69,5 +69,31 @@ describe('shipments', () => {
     cy.get('.item').contains('25').click();
 
     cy.get('table .item').should('have.length.greaterThan', 10);
+  });
+
+  it('folds filters when clicking on title', () => {
+    cy.get('#criteria_state').should('be.visible');
+    cy.get('#criteria_channel').should('be.visible');
+    cy.get('#criteria_method').should('be.visible');
+
+    cy.get('.title').contains('Filters').click();
+
+    cy.get('#criteria_state').should('be.hidden');
+    cy.get('#criteria_channel').should('be.hidden');
+    cy.get('#criteria_method').should('be.hidden');
+  });
+
+  it('opens order details by clicking on order id', () => {
+    cy.get('table td a:first').click();
+
+    cy.get('.header').should('contain', 'Order');
+  });
+
+  it('navigates to next page by using the pagination buttons', () => {
+    cy.get('.pagination div').contains('1').should('have.class', 'active');
+
+    cy.get('.pagination a').contains('Next').click();
+
+    cy.get('.pagination div').contains('2').should('have.class', 'active');
   });
 });
